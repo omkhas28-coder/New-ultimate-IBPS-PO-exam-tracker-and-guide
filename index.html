@@ -64,19 +64,49 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
 .header-day-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
 .header-title { font-family:var(--display); font-size:32px; color:var(--text); letter-spacing:1px; line-height:1.1; }
 .header-phase { display:inline-flex; align-items:center; gap:8px; margin-top:8px; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:500; }
-.header-date {
-  text-align: right;
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.8;
-
+.auth-buttons {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  gap: 8px;
+  margin-top: 6px;
 }
-.header-date strong { color:var(--text); display:block; font-size:16px; }
 
+.btn-login,
+.btn-logout {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: 0.2s ease;
+}
+
+/* Login button */
+.btn-login {
+  background: var(--accent);
+  color: #0a0a0f;
+}
+
+.btn-login:hover {
+  opacity: 0.85;
+}
+
+/* Logout button */
+.btn-logout {
+  background: rgba(255, 74, 74, 0.15);
+  color: #ff4a4a;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 74, 74, 0.25);
+}
+
+/* Username */
+.user-name {
+  font-size: 11px;
+  color: var(--muted);
+}
 /* Sections */
 .section { padding:28px 36px; }
 .section-title { font-family:var(--display); font-size:22px; letter-spacing:1px; color:var(--text); margin-bottom:20px; display:flex; align-items:center; gap:12px; }
@@ -328,9 +358,12 @@ select option { background:var(--bg2); }
       <span id="dashDaysLeft">— days to exam</span>
       <span id="dashDaysLeft">— days to exam</span>
 
-<div style="margin-top:10px; display:flex; gap:8px;">
-  <button id="loginBtn">Login</button>
-  <button id="logoutBtn" style="display:none;">Logout</button>
+<div class="auth-buttons">
+  <button id="loginBtn" class="btn-login">Login</button>
+  <button id="logoutBtn" class="btn-logout" style="display:none;">Logout</button>
+</div>
+
+<span id="userName" class="user-name"></span>
 </div>
 
 <span id="userName"></span>
