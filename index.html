@@ -264,32 +264,41 @@ select option { background:var(--bg2); }
 <body>
 
 <div style="position:fixed; top:15px; right:20px; z-index:9999; display:flex; gap:10px;">
- <button id="loginBtn" style="
-  padding:8px 14px;
+<button id="loginBtn" style="
+  padding:8px 16px;
   border:none;
-  border-radius:6px;
-  background:#4a9eff;
+  border-radius:8px;
+  background:linear-gradient(135deg, #4a9eff, #0066ff);
   color:white;
   cursor:pointer;
-  font-weight:500;
+  font-weight:600;
+  font-family: 'Space Grotesk', sans-serif;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
 ">
   Login
 </button>
 
 <button id="logoutBtn" style="
   display:none;
-  padding:8px 14px;
+  padding:8px 16px;
   border:none;
-  border-radius:6px;
-  background:#ff4a4a;
+  border-radius:8px;
+  background:linear-gradient(135deg, #ff4a4a, #cc0000);
   color:white;
   cursor:pointer;
-  font-weight:500;
+  font-weight:600;
+  font-family: 'Space Grotesk', sans-serif;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
 ">
   Logout
 </button>
 
-<span id="userName" style="font-weight:500; margin-left:5px;"></span>
+<span id="userName" style="
+  color:white;
+  font-weight:500;
+  margin-left:8px;
+  font-family: 'Space Grotesk', sans-serif;
+"></span>
 </div>
 
 <div class="shell">
