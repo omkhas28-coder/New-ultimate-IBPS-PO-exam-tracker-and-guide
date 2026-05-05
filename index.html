@@ -264,9 +264,32 @@ select option { background:var(--bg2); }
 <body>
 
 <div style="position:fixed; top:15px; right:20px; z-index:9999; display:flex; gap:10px;">
-  <button id="loginBtn">Login</button>
-  <button id="logoutBtn" style="display:none;">Logout</button>
-  <span id="userName"></span>
+ <button id="loginBtn" style="
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  background:#4a9eff;
+  color:white;
+  cursor:pointer;
+  font-weight:500;
+">
+  Login
+</button>
+
+<button id="logoutBtn" style="
+  display:none;
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  background:#ff4a4a;
+  color:white;
+  cursor:pointer;
+  font-weight:500;
+">
+  Logout
+</button>
+
+<span id="userName" style="font-weight:500; margin-left:5px;"></span>
 </div>
 
 <div class="shell">
