@@ -2049,5 +2049,52 @@ function calcOverallAccuracy() {
 initState();
 renderDashboard();
 </script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// 🔑 PASTE YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE",
+  projectId: "PASTE_HERE",
+  appId: "PASTE_HERE"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
+// 🟢 LOGIN
+document.getElementById("loginBtn").onclick = async () => {
+  await signInWithPopup(auth, provider);
+};
+
+// 🔴 LOGOUT
+document.getElementById("logoutBtn").onclick = async () => {
+  await signOut(auth);
+};
+
+// 🔄 CHECK LOGIN STATE
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Logged in
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "inline";
+
+    document.getElementById("userName").innerText = user.displayName;
+
+  } else {
+    // Logged out
+    document.getElementById("loginBtn").style.display = "inline";
+    document.getElementById("logoutBtn").style.display = "none";
+
+    document.getElementById("userName").innerText = "";
+  }
+});
+
+</script>
 </body>
 </html>
