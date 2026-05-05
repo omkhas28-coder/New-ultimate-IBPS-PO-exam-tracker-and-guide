@@ -64,7 +64,17 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
 .header-day-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
 .header-title { font-family:var(--display); font-size:32px; color:var(--text); letter-spacing:1px; line-height:1.1; }
 .header-phase { display:inline-flex; align-items:center; gap:8px; margin-top:8px; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:500; }
-.header-date { text-align:right; font-size:13px; color:var(--muted); line-height:1.8; }
+.header-date {
+  text-align: right;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
 .header-date strong { color:var(--text); display:block; font-size:16px; }
 
 /* Sections */
