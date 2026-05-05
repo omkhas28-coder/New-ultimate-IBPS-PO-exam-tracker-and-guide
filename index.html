@@ -2055,12 +2055,25 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔑 PASTE YOUR FIREBASE CONFIG HERE
-const firebaseConfig = {
-  apiKey: "PASTE_HERE",
-  authDomain: "PASTE_HERE",
-  projectId: "PASTE_HERE",
-  appId: "PASTE_HERE"
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjYGAZ0H_-Ibazv5uA8dOtE4JA_nl49F4",
+    authDomain: "updated-ibps-po-tracker.firebaseapp.com",
+    projectId: "updated-ibps-po-tracker",
+    storageBucket: "updated-ibps-po-tracker.firebasestorage.app",
+    messagingSenderId: "988732880037",
+    appId: "1:988732880037:web:bb9947b11f1e952ff9494c"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 };
 
 const app = initializeApp(firebaseConfig);
