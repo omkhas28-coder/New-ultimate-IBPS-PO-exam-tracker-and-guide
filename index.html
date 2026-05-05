@@ -2081,8 +2081,7 @@ const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
 // 🟢 LOGIN
-document.getElementById("loginBtn").onclick = async () => {
-  alert("clicked");
+<button id="loginBtn" class="btn-login" onclick="testClick()">Login</button>
   await signInWithPopup(auth, provider);
 };
 
