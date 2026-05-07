@@ -751,7 +751,288 @@ function initState() {
 function save() {
   localStorage.setItem('ibps_state', JSON.stringify(state));
 }
+// ===== PRACTICE ACCURACY SYSTEM =====
 
+function logPractice(subject) {
+
+  let topic = '';
+  let attempted = 0;
+  let correct = 0;
+  let time = 0;
+
+  // QUANT
+  if(subject === 'quant') {
+    topic = document.getElementById('qTopic').value;
+    attempted = Number(document.getElementById('qAttempted').value);
+    correct = Number(document.getElementById('qCorrect').value);
+    time = Number(document.getElementById('qTime').value);
+  }
+
+  // REASONING
+  if(subject === 'reasoning') {
+    topic = document.getElementById('rTopic').value;
+    attempted = Number(document.getElementById('rAttempted').value);
+    correct = Number(document.getElementById('rCorrect').value);
+    time = Number(document.getElementById('rTime').value);
+  }
+
+  // ENGLISH
+  if(subject === 'english') {
+    topic = document.getElementById('eTopic').value;
+    attempted = Number(document.getElementById('eAttempted').value);
+    correct = Number(document.getElementById('eCorrect').value);
+    time = Number(document.getElementById('eTime').value);
+  }
+
+  // STOP if empty
+  if(!topic || attempted <= 0 || correct < 0) {
+    alert("Please fill all fields properly");
+    return;
+  }
+
+  // CALCULATE ACCURACY
+  const accuracy = Math.round((correct / attempted) * 100);
+
+  // CREATE SESSION OBJECT
+  const session = {
+    date: new Date().toLocaleDateString(),
+    subject,
+    topic,
+    attempted,
+    correct,
+    accuracy,
+    time
+  };
+
+  // SAVE INTO STATE
+  state.practiceLog.push(session);
+
+  save();
+
+  // REFRESH UI
+  renderPracticeLogs();
+  updateSubjectAccuracy();
+  updateOverallAccuracy();
+
+  console.log("saved");
+}
+  function renderPracticeLogs() {
+
+  const table = document.getElementById('analyticsTableBody');
+
+  if(!table) return;
+
+  table.innerHTML = '';
+
+  state.practiceLog.forEach(log => {
+
+    const row = `
+      <tr>
+        <td>${log.date}</td>
+        <td>${log.subject}</td>
+        <td>${log.topic}</td>
+        <td>${log.attempted}</td>
+        <td>${log.correct}</td>
+        <td>${log.accuracy}%</td>
+        <td>${log.time} min</td>
+        <td>
+          ${log.accuracy >= 70
+            ? '<span style="color:lime;">Strong</span>'
+            : '<span style="color:red;">Weak</span>'
+          }
+        </td>
+      </tr>
+    `;
+
+    table.innerHTML += row;
+  });
+
+  // hide empty message
+  const empty = document.getElementById('analyticsEmpty');
+
+  if(state.practiceLog.length > 0) {
+    empty.style.display = 'none';
+  } else {
+    empty.style.display = 'block';
+  }
+}
+  function renderPracticeLogs() {
+
+  const table = document.getElementById('analyticsTableBody');
+
+  if(!table) return;
+
+  table.innerHTML = '';
+
+  state.practiceLog.forEach(log => {
+
+    const row = `
+      <tr>
+        <td>${log.date}</td>
+        <td>${log.subject}</td>
+        <td>${log.topic}</td>
+        <td>${log.attempted}</td>
+        <td>${log.correct}</td>
+        <td>${log.accuracy}%</td>
+        <td>${log.time} min</td>
+        <td>
+          ${log.accuracy >= 70
+            ? '<span style="color:lime;">Strong</span>'
+            : '<span style="color:red;">Weak</span>'
+          }
+        </td>
+      </tr>
+    `;
+
+    table.innerHTML += row;
+  });
+
+  // hide empty message
+  const empty = document.getElementById('analyticsEmpty');
+
+  if(state.practiceLog.length > 0) {
+    empty.style.display = 'none';
+  } else {
+    empty.style.display = 'block';
+  }
+}
+  function updateSubjectAccuracy() {
+
+  const container = document.getElementById('subjectAccuracyBars');
+
+  if(!container) return;
+
+  const subjects = ['quant', 'reasoning', 'english'];
+
+  container.innerHTML = '';
+
+  subjects.forEach(subject => {
+
+    const logs = state.practiceLog.filter(
+      log => log.subject === subject
+    );
+
+    let accuracy = 0;
+
+    if(logs.length > 0) {
+
+      let totalAttempted = 0;
+      let totalCorrect = 0;
+
+      logs.forEach(log => {
+        totalAttempted += log.attempted;
+        totalCorrect += log.correct;
+      });
+
+      accuracy = Math.round(
+        (totalCorrect / totalAttempted) * 100
+      );
+    }
+
+    const row = `
+      <div class="prog-row">
+        <div class="prog-label">${subject.toUpperCase()}</div>
+
+        <div class="prog-bar" style="flex:1;">
+          <div class="prog-fill"
+               style="width:${accuracy}%;
+               background:${accuracy >= 70 ? 'lime' : 'red'};">
+          </div>
+        </div>
+
+        <div class="prog-pct">${accuracy}%</div>
+      </div>
+    `;
+
+    container.innerHTML += row;
+  });
+
+  updateWeakAreas();
+}
+  function updateWeakAreas() {
+
+  const panel = document.getElementById('weakAreaPanel');
+
+  if(!panel) return;
+
+  panel.innerHTML = '';
+
+  const subjects = ['quant', 'reasoning', 'english'];
+
+  subjects.forEach(subject => {
+
+    const logs = state.practiceLog.filter(
+      log => log.subject === subject
+    );
+
+    if(logs.length === 0) return;
+
+    let totalAttempted = 0;
+    let totalCorrect = 0;
+
+    logs.forEach(log => {
+      totalAttempted += log.attempted;
+      totalCorrect += log.correct;
+    });
+
+    const accuracy = Math.round(
+      (totalCorrect / totalAttempted) * 100
+    );
+
+    if(accuracy < 70) {
+
+      panel.innerHTML += `
+        <div class="weak-subject">
+          <div class="weak-icon">⚠</div>
+
+          <div class="weak-info">
+            <div class="weak-name">${subject.toUpperCase()}</div>
+            <div class="weak-stat">
+              Accuracy ${accuracy}% — Needs revision
+            </div>
+          </div>
+
+          <div class="weak-badge priority-high">
+            Weak
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  if(panel.innerHTML === '') {
+    panel.innerHTML = `
+      <div class="alert alert-success">
+        ✅ No weak areas detected
+      </div>
+    `;
+  }
+}
+  function updateOverallAccuracy() {
+
+  const el = document.getElementById('dashAccuracy');
+
+  if(!el) return;
+
+  if(state.practiceLog.length === 0) {
+    el.innerText = '--';
+    return;
+  }
+
+  let attempted = 0;
+  let correct = 0;
+
+  state.practiceLog.forEach(log => {
+    attempted += log.attempted;
+    correct += log.correct;
+  });
+
+  const accuracy = Math.round(
+    (correct / attempted) * 100
+  );
+
+  el.innerText = accuracy + '%';
+}
 // ===== TIME HELPERS =====
 function getToday() {
   const now = new Date();
@@ -1996,6 +2277,9 @@ function calcOverallAccuracy() {
 // ===== INIT =====
 initState();
 renderDashboard();
+  renderPracticeLogs();
+updateSubjectAccuracy();
+updateOverallAccuracy();
 </script>
 </body>
 </html>
