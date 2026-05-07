@@ -2026,6 +2026,7 @@ function addCA() {
   save();
   document.getElementById('caNewTopic').value = '';
   renderCA();
+  renderCACategories();
 }
 
 function toggleCARevised(idx) {
@@ -2040,7 +2041,119 @@ function getThisWeekTopics() {
     return d >= weekAgo;
   });
 }
+function renderCACategories() {
 
+  const container = document.getElementById('caCategoryBreakdown');
+
+  if(!container) return;
+
+  // IF NO DATA
+  if(state.caTopics.length === 0) {
+
+    container.innerHTML = `
+      <div class="card">
+        No current affairs added yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  // GET UNIQUE CATEGORIES
+  const categories = [
+    ...new Set(
+      state.caTopics.map(item => item.category)
+    )
+  ];
+
+  let html = '';
+
+  categories.forEach(category => {
+
+    // GET TOPICS INSIDE CATEGORY
+    const topics = state.caTopics.filter(
+      item => item.category === category
+    );
+
+    html += `
+
+      <div class="card" style="margin-bottom:16px;">
+
+        <!-- CATEGORY HEADER -->
+        <div
+          onclick="toggleCategory('${category}')"
+          style="
+            cursor:pointer;
+            padding:12px;
+            background:var(--bg3);
+            border-radius:8px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            font-weight:600;
+          "
+        >
+
+          <span>${category}</span>
+
+          <span>
+            ${topics.length} Topics ▼
+          </span>
+
+        </div>
+
+        <!-- TOPICS LIST -->
+        <div
+          id="cat-${category}"
+          style="display:none;padding-top:12px;"
+        >
+    `;
+
+    topics.forEach(topic => {
+
+      html += `
+
+        <div class="ca-row">
+
+          <div
+            class="ca-dot"
+            style="background:var(--accent);">
+          </div>
+
+          <div class="ca-text">
+            ${topic.topic}
+          </div>
+
+          <div class="ca-date">
+            ${topic.date}
+          </div>
+
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+  function toggleCategory(category) {
+
+  const section = document.getElementById(`cat-${category}`);
+
+  if(section.style.display === 'none') {
+
+    section.style.display = 'block';
+
+  } else {
+
+    section.style.display = 'none';
+  }
+}
 // ===== COMPUTER AWARENESS =====
 function renderComputer() {
   let total = 0, done = 0;
@@ -2280,6 +2393,7 @@ renderDashboard();
   renderPracticeLogs();
 updateSubjectAccuracy();
 updateOverallAccuracy();
+  renderCACategories();
 </script>
 </body>
 </html>
