@@ -2035,22 +2035,24 @@ function renderCACategories() {
 
   if(!container) return;
 
-  // IF NO DATA
-  if(state.caTopics.length === 0) {
+  const topicsData = state.caTopics || [];
 
-    container.innerHTML = `
-      <div class="card">
-        No current affairs added yet.
-      </div>
-    `;
+// IF NO DATA
+if(topicsData.length === 0) {
 
-    return;
-  }
+  container.innerHTML = `
+    <div class="card">
+      No current affairs added yet.
+    </div>
+  `;
+
+  return;
+}
 
   // GET UNIQUE CATEGORIES
   const categories = [
     ...new Set(
-      state.caTopics.map(item => item.category)
+     topicsData.map(item => item.category)
     )
   ];
 
@@ -2059,7 +2061,7 @@ function renderCACategories() {
   categories.forEach(category => {
 
     // GET TOPICS INSIDE CATEGORY
-    const topics = state.caTopics.filter(
+    const topics = topicsData.filter(
       item => item.category === category
     );
 
