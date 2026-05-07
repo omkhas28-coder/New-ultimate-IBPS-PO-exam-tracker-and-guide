@@ -1997,19 +1997,7 @@ function renderCA() {
     </div>`).join('')}</div>` :
     `<div class="card" style="text-align:center;padding:30px;color:var(--muted);">No topics logged this week yet.</div>`;
 
-  // Category breakdown
-  const catEl = document.getElementById('caCategoryBreakdown');
-  const cats = {};
-  topics.forEach(t => { cats[t.category] = (cats[t.category]||0)+1; });
-  catEl.innerHTML = Object.entries(cats).length > 0 ?
-    `<div class="card"><div style="font-size:13px;font-weight:600;margin-bottom:12px;">Category Coverage</div>
-    ${Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,count]) => `
-      <div class="prog-row">
-        <div class="prog-label" style="width:120px;color:${getCatColor(cat)};">${cat}</div>
-        <div class="prog-bar" style="flex:1;"><div class="prog-fill" style="width:${Math.min(100,count/total*100)}%;background:${getCatColor(cat)};"></div></div>
-        <div class="prog-pct">${count}</div>
-      </div>`).join('')}</div>` :
-    `<div class="card" style="text-align:center;padding:30px;color:var(--muted);">Start adding topics to see category breakdown.</div>`;
+  renderCACategories();
 }
 
 function getCatColor(cat) {
