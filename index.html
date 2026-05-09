@@ -2071,7 +2071,7 @@ if(topicsData.length === 0) {
 
         <!-- CATEGORY HEADER -->
         <div
-          onclick="toggleCategory('${category}')"
+         onclick="toggleCategory('${category.replace(/\s+/g,'-')}')"
           style="
             cursor:pointer;
             padding:12px;
@@ -2094,7 +2094,7 @@ if(topicsData.length === 0) {
 
         <!-- TOPICS LIST -->
         <div
-          id="cat-${category}"
+         id="cat-${category.replace(/\s+/g,'-')}"
           style="display:none;padding-top:12px;"
         >
     `;
