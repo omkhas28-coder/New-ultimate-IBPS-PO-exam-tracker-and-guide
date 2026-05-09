@@ -739,7 +739,11 @@ select option { background:var(--bg2); }
 
 <script>
 // ===== STATE =====
-const START_DATE = new Date(2026, 4, 6); // App start date (today)
+const START_DATE = new Date();
+START_DATE.setFullYear(2026);
+START_DATE.setMonth(4);
+START_DATE.setDate(6);
+START_DATE.setHours(0,0,0,0); // App start date (today)
 let state = JSON.parse(localStorage.getItem('ibps_state') || '{}');
 
 function initState() {
@@ -1059,19 +1063,18 @@ function getToday() {
 
 function getDayNumber() {
 
-  const today = getToday();
+  const today = new Date();
 
-  const start = new Date(
-    START_DATE.getFullYear(),
-    START_DATE.getMonth(),
-    START_DATE.getDate()
+  today.setHours(0,0,0,0);
+
+  const diffTime =
+    today.getTime() - START_DATE.getTime();
+
+  const diffDays = Math.round(
+    diffTime / (1000 * 60 * 60 * 24)
   );
 
-  const diff = Math.round(
-    (today - start) / 86400000
-  );
-
-  return Math.max(1, Math.min(90, diff + 1));
+  return diffDays + 1;
 }
 
 function getPhase(day) {
