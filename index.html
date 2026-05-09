@@ -1516,13 +1516,36 @@ function showPage(pageId) {
 }
 
 function switchTab(section, tab) {
-  const panels = document.querySelectorAll(`#page-${section} .tab-panel`);
-  const tabs = document.querySelectorAll(`#page-${section} .tabs .tab, #${section}Tabs .tab`);
+
+  const panels = document.querySelectorAll(
+    `#page-${section} .tab-panel`
+  );
+
+  const tabs = document.querySelectorAll(
+    `#page-${section} .tabs .tab, #${section}Tabs .tab`
+  );
+
+  // REMOVE ACTIVE
   panels.forEach(p => p.classList.remove('active'));
+
   tabs.forEach(t => t.classList.remove('active'));
+
+  // ACTIVATE PANEL
   const panel = document.getElementById(`${section}-${tab}`);
-  if (panel) panel.classList.add('active');
-  event.target.classList.add('active');
+
+  if(panel) {
+    panel.classList.add('active');
+  }
+
+  // ACTIVATE BUTTON
+  if(event && event.target) {
+    event.target.classList.add('active');
+  }
+
+  // MONTHLY ARCHIVE
+  if(section === 'ca' && tab === 'monthly') {
+    renderMonthlyArchive();
+  }
 }
 
 // ===== DASHBOARD =====
