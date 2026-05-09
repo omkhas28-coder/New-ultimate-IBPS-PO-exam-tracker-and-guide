@@ -2037,22 +2037,22 @@ function renderCACategories() {
 
   const topicsData = state.caTopics || [];
 
-// IF NO DATA
-if(topicsData.length === 0) {
+  // NO TOPICS
+  if(topicsData.length === 0) {
 
-  container.innerHTML = `
-    <div class="card">
-      No current affairs added yet.
-    </div>
-  `;
+    container.innerHTML = `
+      <div class="card" style="padding:20px;">
+        No current affairs added yet.
+      </div>
+    `;
 
-  return;
-}
+    return;
+  }
 
   // GET UNIQUE CATEGORIES
   const categories = [
     ...new Set(
-     topicsData.map(item => item.category)
+      topicsData.map(item => item.category)
     )
   ];
 
@@ -2060,7 +2060,9 @@ if(topicsData.length === 0) {
 
   categories.forEach(category => {
 
-    // GET TOPICS INSIDE CATEGORY
+    const safeCategory = category.replace(/\s+/g,'-');
+
+    // FILTER TOPICS
     const topics = topicsData.filter(
       item => item.category === category
     );
@@ -2069,14 +2071,13 @@ if(topicsData.length === 0) {
 
       <div class="card" style="margin-bottom:16px;">
 
-        <!-- CATEGORY HEADER -->
         <div
-         onclick="toggleCategory('${category.replace(/\s+/g,'-')}')"
+          onclick="toggleCategory('${safeCategory}')"
           style="
             cursor:pointer;
-            padding:12px;
+            padding:14px;
             background:var(--bg3);
-            border-radius:8px;
+            border-radius:10px;
             display:flex;
             justify-content:space-between;
             align-items:center;
@@ -2084,7 +2085,9 @@ if(topicsData.length === 0) {
           "
         >
 
-          <span>${category}</span>
+          <span style="color:${getCatColor(category)};">
+            ${category}
+          </span>
 
           <span>
             ${topics.length} Topics ▼
@@ -2092,10 +2095,9 @@ if(topicsData.length === 0) {
 
         </div>
 
-        <!-- TOPICS LIST -->
         <div
-         id="cat-${category.replace(/\s+/g,'-')}"
-          style="display:none;padding-top:12px;"
+          id="cat-${safeCategory}"
+          style="display:none;padding:14px;"
         >
     `;
 
@@ -2103,11 +2105,14 @@ if(topicsData.length === 0) {
 
       html += `
 
-        <div class="ca-row">
+        <div
+          class="ca-row"
+          style="margin-bottom:10px;"
+        >
 
           <div
             class="ca-dot"
-            style="background:var(--accent);">
+            style="background:${getCatColor(category)};">
           </div>
 
           <div class="ca-text">
@@ -2124,7 +2129,6 @@ if(topicsData.length === 0) {
 
     html += `
         </div>
-
       </div>
     `;
   });
