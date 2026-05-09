@@ -2061,9 +2061,25 @@ function renderCA() {
           <div class="ca-dot" style="background:${getCatColor(t.category)};"></div>
           <div class="ca-text">${t.topic}</div>
           <span class="ca-tag" style="background:${getCatColor(t.category)}22;color:${getCatColor(t.category)};">${t.category}</span>
-          <button class="btn btn-sm" style="padding:3px 8px;font-size:11px;${t.revised?'color:var(--green);border-color:rgba(46,204,113,0.4);':''}"
-            onclick="toggleCARevised(${state.caTopics.indexOf(t)})">${t.revised ? '✓ Revised' : 'Mark Revised'}
-            </button>
+          <div style="display:flex;gap:6px;">
+
+  <button
+    class="btn btn-sm"
+    style="padding:3px 8px;font-size:11px;${t.revised?'color:var(--green);border-color:rgba(46,204,113,0.4);':''}"
+    onclick="toggleCARevised(${state.caTopics.indexOf(t)})"
+  >
+    ${t.revised ? '✓ Revised' : 'Mark Revised'}
+  </button>
+
+  <button
+    class="btn btn-sm"
+    style="padding:3px 8px;font-size:11px;color:#ff6b6b;border-color:rgba(255,107,107,0.3);"
+    onclick="deleteCA(${state.caTopics.indexOf(t)})"
+  >
+    Delete
+  </button>
+
+</div>
             <button
   class="btn btn-sm"
   style="padding:3px 8px;font-size:11px;color:#ff6b6b;border-color:rgba(255,107,107,0.3);"
