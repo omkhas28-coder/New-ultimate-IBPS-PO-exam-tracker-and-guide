@@ -2076,7 +2076,9 @@ function addCA() {
       })
     : 'Old Data',
 
-  date:new Date().toLocaleDateString('en-IN'),
+ date: newsDate
+  ? new Date(newsDate).toLocaleDateString('en-IN')
+  : new Date().toLocaleDateString('en-IN'),
   revised:false,
   ts:Date.now()
 });
