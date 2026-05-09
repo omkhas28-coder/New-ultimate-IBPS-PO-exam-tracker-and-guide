@@ -578,6 +578,7 @@ select option { background:var(--bg2); }
       <div class="tab active" onclick="switchTab('ca','daily')">Daily Log</div>
       <div class="tab" onclick="switchTab('ca','weekly')">Weekly Revision</div>
       <div class="tab" onclick="switchTab('ca','categories')">Categories</div>
+      <div class="tab" onclick="switchTab('ca','monthly')">Monthly Archive</div>
     </div>
     <div id="ca-daily" class="tab-panel active">
       <div class="card" style="margin-bottom:16px;">
@@ -598,6 +599,15 @@ select option { background:var(--bg2); }
             <option value="Other">Other</option>
           </select>
         </div>
+        <div class="form-row">
+  <div class="form-label">News Date</div>
+
+  <input
+    type="date"
+    id="caNewsDate"
+    style="flex:1;"
+  >
+</div>
         <button class="btn btn-accent btn-sm" onclick="addCA()">+ Add Topic</button>
       </div>
       <div id="caList"></div>
@@ -608,6 +618,10 @@ select option { background:var(--bg2); }
     <div id="ca-categories" class="tab-panel">
       <div id="caCategoryBreakdown"></div>
     </div>
+    
+    <div id="ca-monthly" class="tab-panel">
+  <div id="monthlyArchiveContent"></div>
+</div>
   </div>
 </div>
 
@@ -2008,12 +2022,29 @@ function getCatColor(cat) {
 function addCA() {
   const topic = document.getElementById('caNewTopic').value.trim();
   const category = document.getElementById('caCategory').value;
+  const newsDate = document.getElementById('caNewsDate').value;
   if (!topic) { alert('Please enter a topic.'); return; }
   state.caTopics = state.caTopics || [];
-  state.caTopics.push({topic, category, date:new Date().toLocaleDateString('en-IN'), revised:false, ts:Date.now()});
+  state.caTopics.push({
+  topic,
+  category,
+  newsDate,
+  month: newsDate
+    ? new Date(newsDate).toLocaleString('default', {
+        month:'long',
+        year:'numeric'
+      })
+    : 'Old Data',
+
+  date:new Date().toLocaleDateString('en-IN'),
+  revised:false,
+  ts:Date.now()
+});
   save();
   document.getElementById('caNewTopic').value = '';
+  document.getElementById('caNewsDate').value = '';
   renderCA();
+  renderMonthlyArchive();
   renderCACategories();
 }
 
@@ -2036,7 +2067,86 @@ function renderCACategories() {
   if(!container) return;
 
   const topicsData = state.caTopics || [];
+function renderMonthlyArchive() {
 
+  const container = document.getElementById('monthlyArchiveContent');
+
+  if(!container) return;
+
+  const topics = state.caTopics || [];
+
+  if(topics.length === 0) {
+
+    container.innerHTML = `
+      <div class="card">
+        No archived current affairs yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  const grouped = {};
+
+  topics.forEach(item => {
+
+    const month = item.month || 'Old Data';
+
+    if(!grouped[month]) {
+      grouped[month] = [];
+    }
+
+    grouped[month].push(item);
+  });
+
+  let html = '';
+
+  Object.entries(grouped).reverse().forEach(([month, items]) => {
+
+    html += `
+      <div class="card" style="margin-bottom:16px;">
+
+        <div style="
+          font-size:16px;
+          font-weight:700;
+          margin-bottom:14px;
+          color:var(--accent);
+        ">
+          ${month}
+        </div>
+    `;
+
+    items.forEach(topic => {
+
+      html += `
+        <div class="ca-row">
+
+          <div
+            class="ca-dot"
+            style="background:${getCatColor(topic.category)};">
+          </div>
+
+          <div class="ca-text">
+            ${topic.topic}
+          </div>
+
+          <span class="ca-tag"
+            style="
+              background:${getCatColor(topic.category)}22;
+              color:${getCatColor(topic.category)};
+            ">
+            ${topic.category}
+          </span>
+
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+}
   // NO TOPICS
   if(topicsData.length === 0) {
 
@@ -2387,6 +2497,7 @@ renderDashboard();
   renderPracticeLogs();
 updateSubjectAccuracy();
 updateOverallAccuracy();
+  renderMonthlyArchive();
   renderCACategories();
 </script>
 </body>
