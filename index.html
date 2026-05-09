@@ -759,6 +759,9 @@ function initState() {
   for (const k in defaults) {
     if (!(k in state)) state[k] = defaults[k];
   }
+  
+state.currentViewDay = getDayNumber();
+  
   save();
 }
 
