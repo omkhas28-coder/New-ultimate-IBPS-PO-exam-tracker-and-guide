@@ -2062,7 +2062,15 @@ function renderCA() {
           <div class="ca-text">${t.topic}</div>
           <span class="ca-tag" style="background:${getCatColor(t.category)}22;color:${getCatColor(t.category)};">${t.category}</span>
           <button class="btn btn-sm" style="padding:3px 8px;font-size:11px;${t.revised?'color:var(--green);border-color:rgba(46,204,113,0.4);':''}"
-            onclick="toggleCARevised(${state.caTopics.indexOf(t)})">${t.revised ? '✓ Revised' : 'Mark Revised'}</button>
+            onclick="toggleCARevised(${state.caTopics.indexOf(t)})">${t.revised ? '✓ Revised' : 'Mark Revised'}
+            </button>
+            <button
+  class="btn btn-sm"
+  style="padding:3px 8px;font-size:11px;color:#ff6b6b;border-color:rgba(255,107,107,0.3);"
+  onclick="deleteCA(${state.caTopics.indexOf(t)})"
+>
+  Delete
+</button>
         </div>`).join('')}
       </div>`).join('');
   }
@@ -2119,7 +2127,27 @@ function addCA() {
 }
 
 function toggleCARevised(idx) {
-  if (state.caTopics[idx]) { state.caTopics[idx].revised = !state.caTopics[idx].revised; save(); renderCA(); }
+  if (state.caTopics[idx]) {
+    state.caTopics[idx].revised = !state.caTopics[idx].revised;
+    save();
+    renderCA();
+  }
+}
+
+function deleteCA(idx) {
+
+  if(confirm('Delete this news item?')) {
+
+    state.caTopics.splice(idx, 1);
+
+    save();
+
+    renderCA();
+
+    renderCACategories();
+
+    renderMonthlyArchive();
+  }
 }
 
 function getThisWeekTopics() {
