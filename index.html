@@ -2130,7 +2130,50 @@ function renderMonthlyArchive() {
 
   topics.forEach(item => {
 
-    const month = item.month || 'Old Data';
+    let month = item.month;
+
+if(!month) {
+
+  if(item.newsDate) {
+
+    month = new Date(item.newsDate).toLocaleString(
+      'default',
+      {
+        month:'long',
+        year:'numeric'
+      }
+    );
+
+  } else if(item.date) {
+
+    const parts = item.date.split('/');
+
+    if(parts.length === 3) {
+
+      const parsedDate = new Date(
+        parts[2],
+        parts[1]-1,
+        parts[0]
+      );
+
+      month = parsedDate.toLocaleString(
+        'default',
+        {
+          month:'long',
+          year:'numeric'
+        }
+      );
+
+    } else {
+
+      month = 'Old Data';
+    }
+
+  } else {
+
+    month = 'Old Data';
+  }
+}
 
     if(!grouped[month]) {
       grouped[month] = [];
