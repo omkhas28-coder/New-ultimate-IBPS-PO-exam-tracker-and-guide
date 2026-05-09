@@ -763,7 +763,35 @@ function initState() {
   for (const k in defaults) {
     if (!(k in state)) state[k] = defaults[k];
   }
-  
+  state.caTopics = (state.caTopics || []).map(item => {
+
+  // IF OLD ENTRY HAS NO newsDate
+  if(!item.newsDate && item.date) {
+
+    const parts = item.date.split('/');
+
+    if(parts.length === 3) {
+
+      const parsedDate = new Date(
+        parts[2],
+        parts[1]-1,
+        parts[0]
+      );
+
+      item.newsDate = parsedDate.toISOString();
+
+      item.month = parsedDate.toLocaleString(
+        'default',
+        {
+          month:'long',
+          year:'numeric'
+        }
+      );
+    }
+  }
+
+  return item;
+});
 state.currentViewDay = getDayNumber();
   
   save();
