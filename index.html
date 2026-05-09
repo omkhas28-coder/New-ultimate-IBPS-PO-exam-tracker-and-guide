@@ -1058,8 +1058,19 @@ function getToday() {
 }
 
 function getDayNumber() {
+
   const today = getToday();
-  const diff = Math.floor((today - START_DATE) / 86400000);
+
+  const start = new Date(
+    START_DATE.getFullYear(),
+    START_DATE.getMonth(),
+    START_DATE.getDate()
+  );
+
+  const diff = Math.round(
+    (today - start) / 86400000
+  );
+
   return Math.max(1, Math.min(90, diff + 1));
 }
 
